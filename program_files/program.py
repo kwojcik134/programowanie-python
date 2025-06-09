@@ -1,67 +1,56 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.preprocessing import LabelEncoder
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.svm import LinearSVC
 
-
-NUMERIC_VARIABLES = ['Time_spent_Alone', 'Social_event_attendance', 'Going_outside', 'Friends_circle_size',
-                     'Post_frequency']
-
-STRING_VARIABLES = ['Stage_fear', 'Drained_after_socializing']
-
-def preprocess(df):
-    #Encoding yes/no data
-    # enc = LabelEncoder()
-    # to_encode = [col for col in STRING_VARIABLES]
-    # to_encode.append('Personality')
-    # for col in to_encode:
-    #     enc.fit_transform(df[col].tolist())
-
-    print(df.head(5))
-
-    return df
-
-
-def analyze(df):
-    sns.set_theme(style = 'ticks', palette = 'cividis')
-
-    #General data shape
-
-
-    #Distribution of target variable
-    plt.figure()
-    sns.countplot(df, x = df['Personality'], hue = df['Personality'], legend = False)
-    plt.xlabel('')
-    plt.ylabel('Count')
-    plt.title('Distribution of Personality Types in Dataset')
-    plt.show()
-
-
-    #Variables by personality
-    plt.figure(figsize=(10, 10))
-    for i, num in enumerate(NUMERIC_VARIABLES, 1):
-        plt.subplot(3, 2, i)
-        sns.boxplot(x = 'Personality', y = num, data = df, hue = 'Personality', legend = False)
-        plt.title(f'{num.replace("_", " ")} by Personality')
-        plt.ylabel('')
-    plt.tight_layout()
-    plt.show()
-
-    #Correlation of variables
-
-    plt.figure(figsize = (10, 10))
-    sns.heatmap(df.corr(numeric_only = True), annot = True, cmap = 'cividis')
-    plt.show()
-
-path = 'C:/Users/RSM18/PycharmProjects/Pythom1/programowanie-python/data/personality_dataset.csv'
+path = 'C:/Users/RSM18/PycharmProjects/Pythom1/programowanie-python/data/Healthcare-Diabetes.csv'
 # Load data into df
 raw_data = pd.read_csv(path)
 data = raw_data.copy()
+data.drop('Id', axis = 1, inplace = True)
+print(data.head())
 
-# Get rid of missing values
-data.dropna(inplace=True, ignore_index=True)
+#Basic data analysis
+print(data.info())
+print('Missing values:')
+print(data.isnull().sum())
 
-preprocess(data)
+x_set = data.drop('Outcome', axis = 1)
+y_set = data['Outcome']
+
+sns.set_theme(style = 'ticks', palette = 'deep')
+
+#Class distribution
+plt.figure()
+sns.countplot(x = y_set, data = data, hue = y_set, legend = False)
+plt.title('Class distribution of outcomes')
+plt.ylabel('Count')
+plt.xlabel('Outcome')
+plt.show()
+
+#Feature boxplots
+plt.figure(figsize = (10, 20))
+for i, col in enumerate(x_set.columns.tolist(), 1):
+    plt.subplot(3, 3, i)
+    sns.boxplot(data, x = y_set, y = col)
+    plt.title(f'{col} by outcome')
+plt.tight_layout()
+plt.ylabel('')
+plt.xlabel('')
+plt.show()
+
+#Preprocessing
+x_train, x_test, y_train, y_test = train_test_split(x_set, y_set, test_size = 0.2, random_state = 42)
+
+scaler = StandardScaler()
+x_train_scaled = scaler.fit_transform(x_train)
+x_test_scaled = scaler.transform(x_test)
+
+#Linear SVC model
+lin_svc = LinearSVC()
+
+
 
 
