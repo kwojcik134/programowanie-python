@@ -1,0 +1,23 @@
+       Pregnancies      Glucose  ...          Age      Outcome
+count  2768.000000  2768.000000  ...  2768.000000  2768.000000
+mean      3.742775   121.102601  ...    33.132225     0.343931
+std       3.323801    32.036508  ...    11.777230     0.475104
+min       0.000000     0.000000  ...    21.000000     0.000000
+25%       1.000000    99.000000  ...    24.000000     0.000000
+50%       3.000000   117.000000  ...    29.000000     0.000000
+75%       6.000000   141.000000  ...    40.000000     1.000000
+max      17.000000   199.000000  ...    81.000000     1.000000
+
+[8 rows x 9 columns]
+None
+Missing values:
+Pregnancies                 0
+Glucose                     0
+BloodPressure               0
+SkinThickness               0
+Insulin                     0
+BMI                         0
+DiabetesPedigreeFunction    0
+Age                         0
+Outcome                     0
+dtype: int64
