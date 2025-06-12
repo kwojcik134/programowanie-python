@@ -28,7 +28,7 @@ def evaluate(test, prediction, model_name):
     print(report)
 
     evaluation = (f'Accuracy: {accuracy}\n'
-                  f'Classification report: {report}')
+                  f'Classification report: \n {report}')
 
     with open(f'{model_name}_evaluation.txt', 'w') as file:
         file.write(evaluation)
@@ -43,8 +43,6 @@ def evaluate(test, prediction, model_name):
     plt.savefig(f'{model_name}_matrix.jpg')
 
 # Load data into df
-
-
 raw_data = pd.read_csv(path)
 data = raw_data.copy()
 data.drop('Id', axis = 1, inplace = True)
@@ -112,7 +110,6 @@ y_lsvc_predicted = lin_svc.predict(x_test_scaled)
 evaluate(y_test, y_lsvc_predicted, 'lin_svc')
 
 #K Nearest Neighbors model
-
 kneigh = KNeighborsClassifier()
 
 kneigh.fit(x_train_scaled, y_train)
@@ -121,7 +118,6 @@ y_kneigh_predicted = kneigh.predict(x_test_scaled)
 evaluate(y_test, y_kneigh_predicted, 'knn')
 
 #Gradient Boosting model
-
 gbc = GradientBoostingClassifier(random_state = 42, max_depth = 5)
 
 gbc.fit(x_train_scaled, y_train)
