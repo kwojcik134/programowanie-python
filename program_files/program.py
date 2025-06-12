@@ -11,7 +11,13 @@ from sklearn.metrics import confusion_matrix, accuracy_score, classification_rep
 
 sns.set_theme(style = 'ticks', palette = 'deep')
 path = 'C:/Users/RSM18/PycharmProjects/Pythom1/programowanie-python/data/Healthcare-Diabetes.csv'
+if not os.path.exists(path):
+    raise FileNotFoundError(f'The path: {path} does not exist. Please provide valid path')
+if not path[-4:] == '.csv':
+    raise Exception('Please provide a valid .csv files')
 out_path = 'C:/Users/RSM18/PycharmProjects/Pythom1/programowanie-python/output/'
+if not os.path.exists(out_path):
+    raise FileNotFoundError(f'The path: {out_path} does not exist. Please provide valid path')
 
 def evaluate(test, prediction, model_name):
     accuracy = accuracy_score(test, prediction)
@@ -37,6 +43,8 @@ def evaluate(test, prediction, model_name):
     plt.savefig(f'{model_name}_matrix.jpg')
 
 # Load data into df
+
+
 raw_data = pd.read_csv(path)
 data = raw_data.copy()
 data.drop('Id', axis = 1, inplace = True)
